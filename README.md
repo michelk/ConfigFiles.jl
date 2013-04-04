@@ -5,9 +5,8 @@ The main difference is the way string interpolation works. So
 
 * values, defined above in the config-file, should be accessible through `cfg`. Eg
 
-
-    a = 1
-    b = cfg["a"] + 2
+        a = 1
+        b = cfg["a"] + 2
 
 * there is function interpolation eg `a = reverse("abc")` 
 

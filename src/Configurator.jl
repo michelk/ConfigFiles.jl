@@ -11,7 +11,7 @@ function parseList(l)
 end
 
 function parseBlockContents(con)
-    cfg = Dict{Any,Any}()
+    global cfg = Dict{Any,Any}()
     while true
         line = readline(con) 
         if line == ""  || line == "}"

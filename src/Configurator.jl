@@ -1,17 +1,22 @@
 module Configurator
 
-function parseAttr(l)
+function parseValue(l, block)
     (k,v) = map(strip, (split(l, "=")))
-    {k => eval(parse(v))}
+    if ismatch(r"cfg", v)
+        try
+           return({k => eval(parse(v))})
+        catch
+            global ncfg = block
+            nv = replace(v, "cfg", "ncfg")
+            return({k => eval(parse(nv))})
+        end
+    else 
+           return({k => eval(parse(v))})
+    end
 end
 
-function parseList(l)  
-    (k,v) = map(strip, (split(l, "=")))
-    {k => eval(parse(v))}
-end
-
-function parseBlockContents(con)
-    global cfg = Dict{Any,Any}()
+function parseBlockContents(con, cfg)
+    block = Dict{Any,Any}()
     while true
         line = readline(con) 
         if line == ""  || line == "}"
@@ -19,24 +24,24 @@ function parseBlockContents(con)
         end
         line = chomp(line)
         line = strip(replace(line, r"\#.*", "")) # remove comments
-        if ismatch(r"=", line)
-            merge!(cfg,parseAttr(line))
-        elseif ismatch(r"\[", line)
-            merge!(cfg, parseList(line))
+        if ismatch(r"=", line) || ismatch(r"\[", line)
+            merge!(block,parseValue(line, block))
         elseif ismatch(r"\{", line)
             k = strip(split(line, "\{")[1])
-            merge!(cfg, {k => parseBlockContents(con)})
+            merge!(block, {k => parseBlockContents(con, cfg)})
         elseif ismatch(r"import", line)
-            merge!(cfg,readConfig(eval(parse(split(line)[2]))))
+            merge!(block,readConfig(eval(parse(split(line)[2]))))
         else
             continue
         end
     end
-    cfg
+    merge!(cfg, block)
+    block
 end
 
 function readConfig(con::IOStream)
-    parseBlockContents(con)
+    global cfg = Dict{Any,Any}()
+    parseBlockContents(con, cfg)
 end 
 
 function readConfig(f::String)

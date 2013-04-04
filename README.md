@@ -1,9 +1,10 @@
 This is a rudimentary Julia version of a subset of
 [configurator](https://www.github.com/bos/configurator).
 
-The main difference is the way string interpolation works so:
+The main difference is the way string interpolation works. So
 
-* values, defined above in the config-file, should be accessable through `cfg` eg
+* values, defined above in the config-file, should be accessible through `cfg`. Eg
+
 
     a = 1
     b = cfg["a"] + 2
@@ -23,25 +24,24 @@ Already implemented features
 ToDo
 ----
 
-* more flexible syetax 
+* more flexible syntax 
 
 Example
 -------
 
-    uno  = 1
-    dos  = 2
-    tres = cfg["uno"] + 2
-    ll   = [1,2,3]
-    bb   = reverse("abc")
-    tres {
-       a = "da"
-       b = "di"
-       quadro {
-       	  c = "do"
-    	  d = "la"
-       }
+    a = 1
+    b = 2
+    #c = cfg["a"] + cfg["b"] # this is currently not working
+    d = reverse("abc")
+    root = string(joinpath(ENV["HOME"], "src"))
     x {
+       uno = "da"
+       dos = "di"
+       y {
+       	  tres = "do"
+    	  quadro = "la"
+       }
+    }
+    z {
        import "test2.cfg"
     }
-    }
-

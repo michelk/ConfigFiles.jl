@@ -1,5 +1,6 @@
-This is a rudimentary Julia version of a subset of
-[configurator](https://www.github.com/bos/configurator).
+This Julia package provides a single function, `readConfig`, which could
+read a configuration-file formated similar to the one
+[configurator](https://www.github.com/bos/configurator) uses.
 
 The main difference is the way string interpolation works. So
 
@@ -9,9 +10,6 @@ The main difference is the way string interpolation works. So
         b = cfg["a"] + 2
 
 * there is function interpolation eg `a = reverse("abc")` 
-
-Besides that, there is currently no reloading of configuration-files: so it is
-a sole reader.
 
 Already implemented features
 ----------------------------
@@ -23,22 +21,35 @@ Already implemented features
 ToDo
 ----
 
-* more flexible syntax 
+* more flexible syntax. Eg
+
+        x {a = 4}
+        y = [1
+            ,2
+            ,3
+            ]
+        z 
+        {
+          b = 9
+        }
 
 Example
 -------
 
+A valid file-format now looks for example like
+
     a = 1
     b = 2
-    #c = cfg["a"] + cfg["b"] # this is currently not working
+    c = cfg["a"] + cfg["b"]
     d = reverse("abc")
-    root = string(joinpath(ENV["HOME"], "src"))
+    root = joinpath(ENV["HOME"], "src")
+    # 
     x {
        uno = "da"
        dos = "di"
        y {
        	  tres = "do"
-    	  quadro = "la"
+    	  cuatro = "la"
        }
     }
     z {

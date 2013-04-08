@@ -1,5 +1,5 @@
 require("ConfFile")
 using ConfFile
 
-cfg = readConfig("test.cfg")
-dump(cfg)
+CFG = readConfig("test.CFG")
+dump(CFG)

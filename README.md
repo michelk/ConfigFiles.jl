@@ -4,10 +4,10 @@ read a configuration-file formated similar to the one
 
 The main difference is the way string interpolation works. So
 
-* values, defined above in the config-file, should be accessible through `cfg`. Eg
+* values, defined above in the config-file, should be accessible through `CFG`. Eg
 
         a = 1
-        b = cfg["a"] + 2
+        b = CFG["a"] + 2
 
 * there is function interpolation eg `a = reverse("abc")` 
 
@@ -40,7 +40,7 @@ A valid file-format now looks for example like
 
     a = 1
     b = 2
-    c = cfg["a"] + cfg["b"]
+    c = CFG["a"] + CFG["b"]
     d = reverse("abc")
     root = joinpath(ENV["HOME"], "src")
     # 
@@ -53,5 +53,5 @@ A valid file-format now looks for example like
        }
     }
     z {
-       import "test2.cfg"
+       import "test2.CFG"
     }

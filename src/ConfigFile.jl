@@ -2,12 +2,12 @@ module ConfigFile
 
 function parseValue(l, block)
     (k,v) = map(strip, (split(l, "=")))
-    if ismatch(r"cfg", v)
+    if ismatch(r"CFG", v)
         try
            return({k => eval(parse(v))})
         catch
-            global ncfg = block
-            nv = replace(v, "cfg", "ncfg")
+            global nCFG = block
+            nv = replace(v, "CFG", "nCFG")
             return({k => eval(parse(nv))})
         end
     else 
@@ -15,7 +15,7 @@ function parseValue(l, block)
     end
 end
 
-function parseBlockContents(con, cfg)
+function parseBlockContents(con, CFG)
     block = Dict{Any,Any}()
     while true
         line = readline(con) 
@@ -28,20 +28,20 @@ function parseBlockContents(con, cfg)
             merge!(block,parseValue(line, block))
         elseif ismatch(r"\{", line)
             k = strip(split(line, "\{")[1])
-            merge!(block, {k => parseBlockContents(con, cfg)})
+            merge!(block, {k => parseBlockContents(con, CFG)})
         elseif ismatch(r"import", line)
             merge!(block,readConfig(eval(parse(split(line)[2]))))
         else
             continue
         end
     end
-    merge!(cfg, block)
+    merge!(CFG, block)
     block
 end
 
 function readConfig(con::IOStream)
-    global cfg = Dict{Any,Any}()
-    parseBlockContents(con, cfg)
+    global CFG = Dict{Any,Any}()
+    parseBlockContents(con, CFG)
 end 
 
 function readConfig(f::String)

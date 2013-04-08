@@ -23,20 +23,23 @@ ToDo
 
 * more flexible syntax. Eg
 
-        x {a = 4}
+        x {a = "blub"}
         y = [1
             ,2
-            ,3
+            3,
+            5
             ]
         z 
         {
           b = 9
         }
+        b =
+            8
 
 Example
 -------
 
-A valid file-format now looks for example like
+A well formated file  currently looks like 
 
     a = 1
     b = 2

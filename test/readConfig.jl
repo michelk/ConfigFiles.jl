@@ -1,5 +1,4 @@
-require("ConfFile")
-using ConfFile
+require("ConfigFiles")
+using ConfigFiles
 
-CFG = readConfig("test.CFG")
-dump(CFG)
+readConfig("test.CFG")

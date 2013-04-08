@@ -1,4 +1,4 @@
-module ConfFile
+module ConfigFile
 
 function parseValue(l, block)
     (k,v) = map(strip, (split(l, "=")))

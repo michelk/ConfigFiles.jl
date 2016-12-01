@@ -1,26 +1,26 @@
 module ConfigFiles
-typealias Block Dict{String, Any}
+typealias Block Dict{AbstractString, Any}
 typealias ConfigFile Block
 function parseValue(l, block)
     (k,v) = map(strip, (split(l, "=")))
     if ismatch(r"CFG", v)
         try
-           return({k => eval(parse(v))})
+           return(Dict{AbstractString, Any}{k => eval(parse(v))})
         catch
             global nCFG = block
             nv = replace(v, "CFG", "nCFG")
-            return({k => eval(parse(nv))})
+            return(Dict{AbstractString, Any}{k => eval(parse(nv))})
         end
-    else 
-           return({k => eval(parse(v))})
+    else
+        return(Dict{AbstractString, Any}{k => eval(parse(v))})
     end
 end
 
 function parseBlockContents(con, CFG)
     block = Block()
     while true
-        line = readline(con) 
-        if  ismatch(r"\}", line) || line == ""  
+        line = readline(con)
+        if  ismatch(r"\}", line) || line == ""
             break
         end
         line = chomp(line)
@@ -29,7 +29,7 @@ function parseBlockContents(con, CFG)
             merge!(block,parseValue(line, block))
         elseif ismatch(r"\{", line)
             k = strip(split(line, "\{")[1])
-            merge!(block, {k => parseBlockContents(con, CFG)})
+            merge!(block, Dict{AbstractString, Any}{k => parseBlockContents(con, CFG)})
         elseif ismatch(r"import", line)
             merge!(block,readConfig(eval(parse(split(line)[2]))))
         else
@@ -49,9 +49,9 @@ end
 function readConfig(con::IOStream)
     global CFG = Block()
     parseBlockContents(con, CFG)
-end 
+end
 
-function readConfig(f::String)
+function readConfig(f::AbstractString)
     con = open(f, "r")
     v = readConfig(con)
     close(con)
